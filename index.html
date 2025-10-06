@@ -1,148 +1,1030 @@
-﻿<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Kite AI Tweet</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>UBAID | Portfolio</title>
+
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Poppins:wght@500;700&display=swap"
+    rel="stylesheet">
+
   <style>
-    body, html {
+    /* -------------------------
+       VARIABLES & RESET
+       ------------------------- */
+    :root {
+      --bg: #07080c;
+      --muted: #98a0b3;
+      --text: #e6eef8;
+      --accent1: #7b5cff;
+      --accent2: #ff6bb1;
+      --glass: rgba(255, 255, 255, 0.03);
+      --maxw: 1100px;
+      --header-h: 72px;
+    }
+
+    * {
+      box-sizing: border-box
+    }
+
+    html,
+    body {
+      height: 100%
+    }
+
+    body {
       margin: 0;
-      padding: 0;
-      height: 100%;
-      font-family: "Segoe UI", sans-serif;
-      overflow: hidden;
-      background: #0f0f0f;
-      color: #fff;
+      font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      background:
+        radial-gradient(1000px 400px at 8% 10%, rgba(123, 92, 255, 0.06), transparent 12%),
+        radial-gradient(700px 300px at 92% 88%, rgba(255, 107, 177, 0.04), transparent 12%),
+        var(--bg);
+      color: var(--text);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      overflow-x: hidden;
+      line-height: 1.45;
     }
 
+    a {
+      color: inherit
+    }
+
+    button {
+      font: inherit
+    }
+
+    /* -------------------------
+       PARTICLES LAYER
+       ------------------------- */
     #particles-js {
-      position: absolute;
-      width: 100%;
-      height: 100%;
+      position: fixed;
+      inset: 0;
       z-index: 0;
+      pointer-events: none;
+      /* keep interactions free */
     }
 
-    .tweet-card {
-      position: relative;
-      z-index: 1;
-      background: rgba(18,18,18,0.9);
-      border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
-      width: 750px;
-      max-width: 90%;
-      padding: 40px;
-      margin: auto;
-      top: 50%;
-      transform: translateY(-50%);
-      border: 1px solid rgba(255,255,255,0.1);
-      animation: float 6s ease-in-out infinite;
+    /* soft radial glows behind content */
+    .radial-glow {
+      position: fixed;
+      z-index: -1;
+      pointer-events: none;
+      filter: blur(40px);
+      opacity: .45;
     }
 
-    @keyframes float {
-      0% { transform: translateY(-50%) translateX(0px); }
-      50% { transform: translateY(-52%) translateX(5px); }
-      100% { transform: translateY(-50%) translateX(0px); }
+    .glow-left {
+      left: -200px;
+      top: -140px;
+      width: 520px;
+      height: 520px;
+      background: radial-gradient(circle at 25% 25%, rgba(123, 92, 255, 0.45), transparent 40%);
+    }
+
+    .glow-right {
+      right: -160px;
+      bottom: -140px;
+      width: 420px;
+      height: 420px;
+      background: radial-gradient(circle at 75% 75%, rgba(255, 107, 177, 0.28), transparent 40%);
+    }
+
+    /* -------------------------
+       HEADER / NAV
+       ------------------------- */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--header-h);
+      display: flex;
+      align-items: center;
+      z-index: 30;
+      backdrop-filter: blur(8px);
+      background: linear-gradient(180deg, rgba(7, 8, 12, 0.6), rgba(7, 8, 12, 0.32));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.02);
+    }
+
+    .navwrap {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 20px;
+      gap: 12px;
     }
 
     .logo {
       display: flex;
+      gap: 12px;
       align-items: center;
-      margin-bottom: 25px;
+      font-family: Poppins, Inter;
     }
 
-    .logo img {
-      height: 60px;
-      margin-right: 20px;
+    .logo-dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      box-shadow: 0 8px 30px rgba(123, 92, 255, 0.14);
     }
 
-    .logo h1 {
-      font-size: 2rem;
-      background: linear-gradient(45deg, #00c6ff, #0072ff);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      font-weight: bold;
+    .logo .name {
+      font-weight: 900;
+      font-size: 15px;
     }
 
-    .tweet-text {
-      font-size: 1.3rem;
-      line-height: 1.7;
-      margin-bottom: 25px;
-      color: #ddd;
+    .logo .sub {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
     }
 
-    .tweet-meta {
-      font-size: 1rem;
-      color: #aaa;
+    /* desktop nav links */
+    nav.desktop {
       display: flex;
-      justify-content: space-between;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      padding-top: 12px;
+      gap: 22px;
+      align-items: center;
     }
 
-    .tweet-card:hover {
-      box-shadow: 0 0 25px #00c6ff, 0 0 45px #0072ff;
-      transition: 0.4s;
+    .nav-link {
+      position: relative;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      padding: 8px 2px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* underline effect */
+    .nav-link::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -6px;
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform .22s cubic-bezier(.2, .9, .3, 1);
+      border-radius: 3px;
+      opacity: 0.95;
+    }
+
+    .nav-link:hover {
+      color: #fff;
+    }
+
+    .nav-link:hover::after {
+      transform: scaleX(1);
+    }
+
+    .nav-link.active {
+      color: var(--accent2);
+    }
+
+    .nav-link.active::after {
+      transform: scaleX(1);
+    }
+
+    /* desktop bold / clarity tweak */
+    @media(min-width:761px) {
+      .nav-link {
+        font-weight: 800;
+        font-size: 15px;
+        letter-spacing: 0.2px;
+      }
+
+      .logo .name {
+        font-size: 16px;
+      }
+    }
+
+    /* mobile hamburger */
+    .hamburger {
+      display: none;
+      background: linear-gradient(135deg, var(--accent1), var(--accent2));
+      border-radius: 8px;
+      padding: 8px;
+      border: 0;
+      color: #fff;
+      cursor: pointer;
+    }
+
+    /* -------------------------
+       CONTENT / HERO
+       ------------------------- */
+    main {
+      padding-top: calc(var(--header-h)+12px);
+      position: relative;
+      z-index: 10;
+    }
+
+    .container {
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 28px 20px;
+      min-height: calc(100vh - var(--header-h));
+      display: flex;
+      align-items: center;
+    }
+
+    .hero-grid {
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 36px;
+      align-items: center;
+    }
+
+    /* left text */
+    .h-hi {
+      color: var(--muted);
+      font-size: 18px;
+      margin: 0 0 8px 0;
+    }
+
+    .h-name {
+      font-family: Poppins, Inter;
+      font-size: 48px;
+      line-height: 1;
+      font-weight: 900;
+      margin: 0;
+    }
+
+    .h-name .grad {
+      background: linear-gradient(90deg, var(--accent1), var(--accent2));
+      -webkit-background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+
+    .h-title {
+      margin-top: 12px;
+      font-size: 22px;
+      font-weight: 700;
+      color: #cd5ff8;
+      letter-spacing: 1px;
+      text-shadow: 0 0 15px rgba(205, 95, 248, 0.7);
+      display: inline-flex;
+      align-items: baseline;
+      /* ✅ fixed alignment */
+    }
+
+    .cursor {
+      display: inline-block;
+      margin-left: 4px;
+      width: 3px;
+      height: 22px;
+      background-color: #cd5ff8;
+      animation: blink 1s infinite;
+      box-shadow: 0 0 10px rgba(205, 95, 248, 0.8);
+    }
+
+    @keyframes blink {
+
+      0%,
+      50%,
+      100% {
+        opacity: 1;
+      }
+
+      25%,
+      75% {
+        opacity: 0;
+      }
+    }
+
+
+    /* right profile placeholder */
+    .profile-box {
+      width: 320px;
+      height: 320px;
+      border-radius: 18px;
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01));
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 30px 70px rgba(2, 6, 23, 0.6);
+    }
+
+    .profile-box .placeholder {
+      text-align: center;
+      color: var(--muted);
+      padding: 12px;
+    }
+
+    /* small socials row under hero text (no CTA buttons) */
+    .socials {
+      display: flex;
+      gap: 12px;
+      margin-top: 18px;
+      color: var(--muted);
+    }
+
+    /* -------------------------
+       MOBILE RESPONSIVE
+       ------------------------- */
+    @media(max-width:1000px) {
+      .hero-grid {
+        grid-template-columns: 1fr 300px;
+      }
+    }
+
+    @media(max-width:760px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .profile-box {
+        width: 260px;
+        height: 260px;
+        margin: 0 auto;
+      }
+
+      .hamburger {
+        display: inline-flex;
+      }
+
+      nav.desktop {
+        display: none;
+      }
+
+      /* hide desktop links on mobile */
+    }
+
+    /* -------------------------
+       MOBILE MENU PANEL
+       ------------------------- */
+    .mobile-panel {
+      position: fixed;
+      top: calc(var(--header-h)+10px);
+      right: 14px;
+      z-index: 40;
+      background: linear-gradient(180deg, rgba(11, 13, 18, 0.98), rgba(11, 13, 18, 0.98));
+      border-radius: 12px;
+      padding: 8px;
+      box-shadow: 0 10px 40px rgba(2, 6, 23, 0.6);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      min-width: 170px;
+      display: none;
+    }
+
+    .mobile-panel.show {
+      display: block;
+    }
+
+    .mobile-panel button {
+      display: block;
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 8px;
+      background: transparent;
+      border: 0;
+      color: var(--muted);
+      text-align: left;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .mobile-panel button:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    .mobile-panel button.active {
+      color: var(--accent2);
+    }
+
+    /* -------------------------
+       COMING SOON TOAST
+       ------------------------- */
+    .toast {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 60;
+      background: rgba(11, 13, 18, 0.96);
+      color: var(--muted);
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.03);
+      box-shadow: 0 10px 30px rgba(2, 6, 23, 0.6);
+      display: none;
+    }
+
+    .toast.show {
+      display: block;
+      animation: toastIn .28s ease;
+    }
+
+    @keyframes toastIn {
+      from {
+        transform: translateY(6px);
+        opacity: 0
+      }
+
+      to {
+        transform: none;
+        opacity: 1
+      }
+    }
+
+    /* prefer reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      * {
+        transition: none !important;
+        animation: none !important;
+      }
+    }
+
+    /* fix hero overlap on mobile */
+    @media(max-width: 760px) {
+      main {
+        padding-top: calc(var(--header-h) + 60px) !important;
+      }
+    }
+
+
+    /* Desktop Navigation */
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: white;
+      font-size: 1rem;
+      text-decoration: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .nav-link:hover {
+      transform: scale(1.05);
+      opacity: 0.9;
+    }
+
+    /* Icon Style */
+    .nav-icon {
+      width: 20px;
+      height: 20px;
+      filter: brightness(0) invert(1);
+      /* makes icons pure white */
+      transition: transform 0.3s ease;
+    }
+
+    .nav-link:hover .nav-icon {
+      transform: scale(1.1);
+    }
+
+    /* Mobile Menu Buttons */
+    .mobile-panel button {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 0.9rem;
+      background: transparent;
+      border: none;
+      text-align: center;
+      padding: 12px;
+      width: 100%;
+    }
+
+    .mobile-panel button:hover {
+      opacity: 0.8;
+    }
+
+    /* Mobile Icons Adjustment */
+    .mobile-panel .nav-icon {
+      width: 28px;
+      height: 28px;
+      margin-bottom: 6px;
+      filter: brightness(0) invert(1);
+    }
+
+    /* ===========================
+   INTRO SECTION STYLING
+=========================== */
+    .intro-section {
+      padding: 100px 10%;
+      color: white;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+    }
+
+    .intro-section h2 {
+      font-size: 2.4rem;
+      margin-bottom: 40px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #fff;
+    }
+
+    .intro-section h2 .highlight {
+      color: #8a2be2;
+      /* same color as 'Ubaid Ullah' */
+    }
+
+    .intro-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .intro-text-image {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 90px;
+      flex-wrap: wrap;
+    }
+
+    .intro-text {
+      flex: 1;
+      font-size: 1rem;
+      line-height: 1.8;
+      text-align: left;
+      max-width: 600px;
+    }
+
+    .intro-text p {
+      margin-bottom: 15px;
+    }
+
+    .intro-image img {
+      max-width: 240px;
+      /* slightly smaller */
+      border-radius: 15px;
+      transition: transform 0.3s ease;
+    }
+
+    .intro-image img:hover {
+      transform: scale(1.05);
+    }
+
+    /* FIND ME ON */
+    .find-me {
+      margin-top: 60px;
+    }
+
+    .find-me h3 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+    }
+
+    .find-me p {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin-bottom: 25px;
+    }
+
+    .social-icons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .social-icons img {
+      width: 35px;
+      height: 35px;
+      filter: brightness(0) invert(1);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .social-icons img:hover {
+      transform: scale(1.2);
+      opacity: 0.8;
+    }
+
+    /* ========== MOBILE RESPONSIVE (FINAL CLEAN VERSION) ========== */
+    @media (max-width: 768px) {
+      .intro-text-image {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: left;
+        gap: 20px;
+        /* balanced space between text and image */
+      }
+
+      .intro-text {
+        font-size: 0.95rem;
+        line-height: 1.7;
+        margin: 0 auto;
+        max-width: 90%;
+        text-align: left;
+        /* natural paragraph alignment */
+      }
+
+      .intro-text p {
+        margin-bottom: 12px;
+      }
+
+      .intro-image {
+        margin-top: 15px;
+        display: flex;
+        justify-content: center;
+      }
+
+      .intro-image img {
+        max-width: 180px;
+        /* slightly smaller for mobile */
+        border-radius: 12px;
+      }
+
+      .find-me {
+        margin-top: 40px;
+        text-align: center;
+      }
+
+      .social-icons {
+        gap: 18px;
+        justify-content: center;
+      }
+
+      .find-me h3 {
+        font-size: 1.5rem;
+      }
+
+      .find-me p {
+        font-size: 0.95rem;
+      }
+    }
+
+    #bold {
+      color: rgb(199, 112, 240);
+      text-shadow: 0 0 12px rgba(199, 112, 240, 0.5);
     }
   </style>
 </head>
+
 <body>
-  <div id="particles-js"></div>
 
-  <div class="tweet-card">
-    <div class="logo">
-      <img src="Resume.png" alt="Kite Logo">
-      <h1>Kite AI</h1>
-    </div>
-    <div class="tweet-text">
-      Reimagining intelligence with AI that learns like humans.  
-  Smarter, faster, and more creative thats the Kite way.  
+  <!-- Particles and soft glows -->
+  <div id="particles-js" aria-hidden="true"></div>
+  <div class="radial-glow glow-left" aria-hidden="true"></div>
+  <div class="radial-glow glow-right" aria-hidden="true"></div>
 
-  With Kite AI, we’re not just building tools, we’re shaping the future of human machine collaboration.<br> <br> 
-  From Ozone Testnet to Fly The Kite NFTs, our mission is to empower communities, creators, and innovators worldwide.  
+  <!-- Header / Navbar -->
+  <header>
+    <div class="navwrap" role="navigation" aria-label="Main navigation">
+      <div class="logo" aria-hidden>
+        <div class="logo" aria-hidden>
+          <a href="/" class="navbar-brand" style="text-decoration:none;">
+            <h1 style="
+              font-family: 'Poppins', sans-serif;
+              font-size: 150%;
+              color: rgb(199, 112, 240);
+              font-weight: 900;
+              letter-spacing: 1px;
+              text-shadow: 0 0 12px rgba(199, 112, 240, 0.5);
+              margin: 0;
+            ">
+              U B A I D.
+            </h1>
+          </a>
+        </div>
 
-  <br><br>The future isn’t automated its intelligently connected.
+      </div>
+
+      <!-- Desktop nav -->
+      <nav class="desktop" aria-hidden="false">
+        <a class="nav-link active" href="#home">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M12 3l9 9h-3v9h-12v-9h-3z" />
+          </svg>
+          Home
+        </a>
+        <a class="nav-link" href="#about">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M12 12a5 5 0 1 0-5-5 5 5 0 0 0 5 5zm0 2c-4 0-7 2-7 4v2h14v-2c0-2-3-4-7-4z" />
+          </svg>
+          About
+        </a>
+        <a class="nav-link" href="#skills">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M19.14 12.94a7.14 7.14 0 1 1-7.14-7.14 7.14 7.14 0 0 1 7.14 7.14z" />
+          </svg>
+          Skills
+        </a>
+        <a class="nav-link" href="#experience">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M4 7h16v13H4zM9 4h6v3H9z" />
+          </svg>
+          Experience
+        </a>
+        <a class="nav-link" href="#contact">
+          <svg viewBox="0 0 24 24" width="20" height="20">
+            <path fill="currentColor" d="M4 4h16v16H4zM22 6l-10 7L2 6" />
+          </svg>
+          Contact
+        </a>
+      </nav>
+
+
+      <!-- Mobile hamburger -->
+      <button class="hamburger" id="hambBtn" aria-label="Open menu" aria-expanded="false">
+        <!-- simple 3-line icon -->
+        <svg width="20" height="14" viewBox="0 0 20 14" fill="none" aria-hidden>
+          <rect width="20" height="2" rx="1" fill="white" opacity="0.95" />
+          <rect y="6" width="20" height="2" rx="1" fill="white" opacity="0.95" />
+          <rect y="12" width="20" height="2" rx="1" fill="white" opacity="0.95" />
+        </svg>
+      </button>
     </div>
-    <div class="tweet-meta">
-      
-      <span>02 Oct 2025</span>
-    </div>
+  </header>
+
+  <!-- Mobile panel (hidden by default) -->
+  <div id="mobilePanel" class="mobile-panel" role="menu" aria-hidden="true">
+    <button data-target="home">Home</button>
+    <button data-target="about">About</button>
+    <button data-target="skills">Skills</button>
+    <button data-target="experience">Experience</button>
+    <button data-target="contact">Contact</button>
   </div>
 
-  <!-- Particles.js library -->
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <!-- Main content (landing only) -->
+  <main>
+    <div class="container">
+      <div class="hero-grid" id="home" role="region" aria-label="Home">
+        <!-- left: text -->
+        <div>
+          <h2 class="h-name">Hi There! </h2> <br>
+          <h2 class="h-name">I'M <span class="grad">UBAID Ullah</span></h2>
+          <br>
+          <br>
+          <p class="h-title">
+            <span id="typed-text"></span>
+            <span class="cursor"></span>
+          </p>
+
+          <br>
+
+          <div class="socials" aria-hidden>
+            <!-- Load Font Awesome -->
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+              integrity="sha512-..." crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <!-- Links with icon
+s -->
+
+
+          </div>
+        </div>
+
+        <!-- right: profile placeholder -->
+        <div>
+
+          <img src="pic.png" alt="Sam" style="width:100%;height:100%;object-fit:cover;border-radius:14px" />
+
+        </div>
+  </main>
+  <!-- ===========================
+     INTRODUCTION SECTION
+=========================== -->
+  <section id="intro" class="intro-section">
+    <div class="intro-content">
+      <h2>LET ME <span class="highlight">INTRODUCE</span> MYSELF</h2>
+
+      <div class="intro-text-image">
+        <div class="intro-text">
+          <p>I fell in love with Web3 communities and I’ve learnt how powerful engagement and teamwork can be. 🤝 </p>
+          <p>I am fluent in managing platforms like <i id="bold">Discord, Telegram, and X (Twitter) keeping them active,
+              positive, and spam free.</i></p>
+          <p>My field of interest lies in building <i id="bold">strong online communities, organizing campaigns and
+              supporting projects through creative social engagement.</i></p>
+          <p>Whenever possible, I apply my skills to build and manage <i id="bold">active Web3 communities, creating
+              meaningful engagement through clear communication, authenticity and a deep understanding of community
+              growth </i></p>
+          <p>Alongside my community work, I’m also a <i id="bold">junior web developer who enjoys building modern user
+              friendly websites and exploring the creative side of Web3 development.</i></p>
+        </div>
+
+        <!-- Leave your image placeholder here -->
+        <div class="intro-image">
+          <img src="pfp.png" alt="Sam Image" />
+        </div>
+      </div>
+
+      <div class="find-me">
+        <h3>FIND ME ON</h3>
+        <p>Feel free to <i id="bold">connect </i> &nbsp; with me</p>
+        <div class="social-icons">
+          <a href="https://x.com/Sam_Neon_0" target="_blank" style="text-decoration: none;">
+            <img src="https://cdn.jsdelivr.net/gh/simple-icons/simple-icons/icons/x.svg" alt="X (Twitter)" width="16"
+              height="16" style="filter: invert(1);" />
+          </a>
+          <a href="https://t.me/SamNeon17" target="_blank"><img src="tg.png" alt="Telegram" /></a>
+          <a href="https://github.com/samneon17" target="_blank"><img src="g.png" alt="GitHub" /></a>
+          <a href="linkedin.com/in/sam-neon" target="_blank"><img src="l.png" alt="LinkedIn" /></a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Coming soon toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+  <!-- Particles.js CDN (safe init) -->
   <script>
-    particlesJS("particles-js", {
-      "particles": {
-        "number": { "value": 120 },
-        "size": { "value": 3 },
-        "color": { "value": "#00c6ff" },
-        "line_linked": {
-          "enable": true,
-          "distance": 150,
-          "color": "#0072ff",
-          "opacity": 0.5,
-          "width": 1
+    (function () {
+      // particles config (purple glow)
+      const cfg = {
+        "particles": {
+          "number": { "value": 80, "density": { "enable": true, "value_area": 800 } },
+          "color": { "value": "#a855f7" },
+          "shape": { "type": "circle" },
+          "opacity": { "value": 0.55 },
+          "size": { "value": 3 },
+          "line_linked": { "enable": true, "distance": 150, "color": "#a855f7", "opacity": 0.35, "width": 1 },
+          "move": { "enable": true, "speed": 2.5 }
         },
-        "move": {
-          "enable": true,
-          "speed": 3
-        }
-      },
-      "interactivity": {
-        "events": {
-          "onhover": { "enable": true, "mode": "grab" },
-          "onclick": { "enable": true, "mode": "push" }
+        "interactivity": {
+          "events": { "onhover": { "enable": true, "mode": "repulse" } }
         },
-        "modes": {
-          "grab": { "distance": 200, "line_linked": { "opacity": 0.7 } },
-          "push": { "particles_nb": 4 }
+        "retina_detect": true
+      };
+
+      function initParticles() {
+        try {
+          if (window.particlesJS) {
+            window.particlesJS('particles-js', cfg);
+          } else {
+            console.warn('particlesJS not available.');
+          }
+        } catch (e) {
+          console.warn('particles init error', e);
         }
       }
+
+      // load script dynamically and initialize
+      if (typeof window !== 'undefined') {
+        if (window.particlesJS) {
+          initParticles();
+        } else {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/particles.js';
+          s.async = true;
+          s.onload = initParticles;
+          s.onerror = function () { console.warn('Failed to load particles.js'); };
+          document.head.appendChild(s);
+        }
+      }
+    })();
+  </script>
+
+  <!-- Interaction JS: menu toggle, nav clicks, toast -->
+  <script>
+    (function () {
+      const desktopLinks = Array.from(document.querySelectorAll('.nav-link'));
+      const mobilePanel = document.getElementById('mobilePanel');
+      const hambBtn = document.getElementById('hambBtn');
+      const toast = document.getElementById('toast');
+
+      // open/close mobile panel
+      function setMobileOpen(open) {
+        if (open) {
+          mobilePanel.classList.add('show');
+          mobilePanel.setAttribute('aria-hidden', 'false');
+          hambBtn.setAttribute('aria-expanded', 'true');
+        } else {
+          mobilePanel.classList.remove('show');
+          mobilePanel.setAttribute('aria-hidden', 'true');
+          hambBtn.setAttribute('aria-expanded', 'false');
+        }
+      }
+
+      hambBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        setMobileOpen(!mobilePanel.classList.contains('show'));
+      });
+
+      // close when clicking outside mobile panel
+      document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 760 && mobilePanel.classList.contains('show')) {
+          if (!mobilePanel.contains(e.target) && !hambBtn.contains(e.target)) {
+            setMobileOpen(false);
+          }
+        }
+      });
+
+      // ESC closes mobile panel
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') setMobileOpen(false);
+      });
+
+      // nav click handler (desktop)
+      desktopLinks.forEach(link => {
+        link.addEventListener('click', (ev) => {
+          ev.preventDefault();
+          const target = link.dataset.target;
+          const el = document.getElementById(target);
+          // active styling
+          desktopLinks.forEach(l => l.classList.remove('active'));
+          link.classList.add('active');
+
+          if (el) {
+            // if section exists, scroll to it
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            // show coming soon toast
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1800);
+          }
+          // close mobile panel if open
+          setMobileOpen(false);
+        });
+      });
+
+      // mobile panel buttons behaviour
+      mobilePanel.querySelectorAll('button').forEach(btn => {
+        btn.addEventListener('click', (ev) => {
+          const target = btn.dataset.target;
+          const el = document.getElementById(target);
+          // mark desktop nav active class if present
+          desktopLinks.forEach(l => {
+            if (l.dataset.target === target) l.classList.add('active');
+            else l.classList.remove('active');
+          });
+
+          if (el) {
+            el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 1800);
+          }
+          setMobileOpen(false);
+        });
+      });
+
+      // make Home active initially
+      desktopLinks.forEach(l => { if (l.dataset.target === 'home') l.classList.add('active'); });
+    })();
+  </script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const roles = [
+        "Community Manager",
+        "Social Media Moderator",
+        "Web Developer"
+      ];
+
+      const typedText = document.getElementById("typed-text");
+      const typingDelay = 150;
+      const erasingDelay = 80;
+      const newTextDelay = 2000;
+      let roleIndex = 0;
+      let charIndex = 0;
+      let isErasing = false;
+
+      function typeEffect() {
+        const currentRole = roles[roleIndex];
+
+        if (!isErasing && charIndex < currentRole.length) {
+          typedText.textContent += currentRole.charAt(charIndex);
+          charIndex++;
+          setTimeout(typeEffect, typingDelay);
+        }
+        else if (isErasing && charIndex > 0) {
+          typedText.textContent = currentRole.substring(0, charIndex - 1);
+          charIndex--;
+          setTimeout(typeEffect, erasingDelay);
+        }
+        else {
+          if (!isErasing) {
+            setTimeout(() => {
+              isErasing = true;
+              typeEffect();
+            }, newTextDelay);
+          } else {
+            isErasing = false;
+            roleIndex = (roleIndex + 1) % roles.length;
+            // ✅ small pause before starting next line (smooth but no lag)
+            setTimeout(typeEffect, 400);
+          }
+        }
+      }
+
+      // ✅ Start immediately — no blank gap
+      typeEffect();
     });
   </script>
+
 </body>
+
 </html>
-
-
-
-
